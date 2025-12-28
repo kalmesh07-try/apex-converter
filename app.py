@@ -4,7 +4,7 @@ import json
 
 app = Flask(__name__)
 
-# --- THE APEX PROXY UI ---
+# --- UI CODE (Keeping your Dark Theme) ---
 HTML_CODE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +58,7 @@ def process():
     url = request.form.get('url')
     mode = request.form.get('mode')
     
-    # --- THE COBALT CONNECTION ---
-    # Instead of downloading it ourselves, we send the link to Cobalt.
+    # --- COBALT API REQUEST ---
     api_url = "https://api.cobalt.tools/api/json"
     headers = {
         "Accept": "application/json",
@@ -67,7 +66,6 @@ def process():
         "User-Agent": "ApexConverter/1.0"
     }
     
-    # Configure the request
     payload = {
         "url": url,
         "videoQuality": "1080",
@@ -76,17 +74,20 @@ def process():
     }
 
     try:
-        # Send request to Cobalt
         response = requests.post(api_url, json=payload, headers=headers)
         data = response.json()
         
-        # Check if Cobalt gave us a download link
+        # If Cobalt gives a success URL, send the user there immediately
         if 'url' in data:
             return redirect(data['url'])
+        
+        # Handle Cobalt Errors
         elif 'status' in data and data['status'] == 'error':
-            return f"<h3 style='color:white;text-align:center;font-family:sans-serif;'>Error: {data.get('text', 'Unknown')}</h3>"
+            err_text = data.get('text', 'Unknown Error')
+            return f"<h3 style='color:white;text-align:center;font-family:sans-serif;'>Error: {err_text}</h3><br><a href='/' style='color:#00ff7f;display:block;text-align:center;'>Try Again</a>"
+        
         else:
-            return f"<h3 style='color:white;text-align:center;font-family:sans-serif;'>Server Busy. Try again in 5 seconds.</h3>"
+            return f"<h3 style='color:white;text-align:center;font-family:sans-serif;'>Server Busy. Please wait 5 seconds.</h3><br><a href='/' style='color:#00ff7f;display:block;text-align:center;'>Try Again</a>"
             
     except Exception as e:
         return f"<h3 style='color:white;text-align:center;font-family:sans-serif;'>Connection Failed: {str(e)}</h3>"
