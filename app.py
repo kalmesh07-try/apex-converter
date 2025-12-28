@@ -3,6 +3,7 @@ import yt_dlp
 import os
 import time
 import re
+import glob
 
 app = Flask(__name__)
 
@@ -103,13 +104,13 @@ def download():
     end_time = request.form.get('end')
     timestamp = int(time.time())
 
-    # --- USING YOUR PASTED COOKIES ---
+    # --- COOKIES + ERROR VISIBILITY ---
     ydl_opts = {
         'quiet': True,
         'outtmpl': f"temp_{timestamp}.%(ext)s",
-        'cookiefile': 'cookies.txt',  # <--- THIS IS THE KEY
+        'cookiefile': 'cookies.txt', 
         'nocheckcertificate': True,
-        'ignoreerrors': True,
+        # Removed 'ignoreerrors' so we can see if it fails!
     }
 
     try:
@@ -144,11 +145,16 @@ def download():
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
         
-        t_file = f"temp_{timestamp}.{f_ext}"
-        if not os.path.exists(t_file):
-            for f in os.listdir('.'):
-                if f.startswith(f"temp_{timestamp}"):
-                    t_file = f; break
+        # --- ROBUST FILE FINDER ---
+        # Sometimes it downloads as .m4a then converts to .mp3, or saves as .webm
+        # This block hunts for ANY file with that timestamp
+        t_file = None
+        for file in glob.glob(f"temp_{timestamp}.*"):
+            t_file = file
+            break
+            
+        if not t_file or not os.path.exists(t_file):
+            return "Download failed! Cookies might be invalid or expired.", 400
         
         return send_file(t_file, as_attachment=True, download_name=f"{clean_title}.{f_ext}")
     except Exception as e: return str(e), 400
