@@ -12,58 +12,54 @@ HTML_CODE = """
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Midnight</title>
+    <title>Apex Eternal</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: #050505; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
-        .cyber-grid { position: fixed; top: 0; left: 0; width: 200%; height: 200%; background: linear-gradient(rgba(10, 10, 10, 0) 50%, #000 100%), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 80px 80px, 40px 40px, 40px 40px; transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px); animation: gridMove 25s linear infinite; z-index: -1; }
-        @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); } 100% { transform: perspective(500px) rotateX(60deg) translateY(80px) translateZ(-200px); } }
-        .glass-panel { background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.08); padding: 40px 30px; border-radius: 24px; width: 90%; max-width: 440px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.8); animation: floatCard 6s ease-in-out infinite; }
-        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        h1 { font-size: 34px; font-weight: 800; letter-spacing: 4px; margin-bottom: 5px; background: linear-gradient(135deg, #fff 0%, #a5a5a5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .subtitle { color: #666; font-size: 10px; letter-spacing: 3px; margin-bottom: 30px; font-weight: 700; text-transform: uppercase; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background-color: #000; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .bg-pulse { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%); z-index: -1; animation: pulse 10s infinite alternate; }
+        @keyframes pulse { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+        .glass-panel { background: rgba(20, 20, 20, 0.9); border: 1px solid #333; padding: 40px 30px; border-radius: 20px; width: 90%; max-width: 440px; text-align: center; box-shadow: 0 0 50px rgba(0,255,127,0.1); }
+        h1 { font-size: 32px; font-weight: 800; letter-spacing: 5px; margin-bottom: 5px; color: #00ff7f; text-transform: uppercase; text-shadow: 0 0 15px rgba(0,255,127,0.5); }
+        .subtitle { color: #888; font-size: 10px; letter-spacing: 3px; margin-bottom: 30px; font-weight: 700; text-transform: uppercase; }
         .input-group { position: relative; margin-bottom: 25px; }
-        input[type="text"] { width: 100%; padding: 18px; padding-right: 45px; background: rgba(30, 30, 30, 0.6); border: 1px solid #333; border-radius: 12px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
-        input[type="text"]:focus { border-color: #555; background: rgba(40, 40, 40, 0.8); box-shadow: 0 0 20px rgba(255, 255, 255, 0.05); }
+        input[type="text"] { width: 100%; padding: 18px; padding-right: 45px; background: #111; border: 1px solid #333; border-radius: 10px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        input[type="text"]:focus { border-color: #00ff7f; box-shadow: 0 0 15px rgba(0,255,127,0.2); }
         .clear-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; display: none; background: none; border: none; font-size: 18px; }
-        .btn-stack { display: flex; flex-direction: column; gap: 15px; }
-        button.action-btn { padding: 18px; border: none; border-radius: 12px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-mp3 { background: linear-gradient(145deg, #2a2a2a, #1a1a1a); color: #ccc; border: 1px solid #333; }
-        .btn-mute { background: linear-gradient(145deg, #1e2a3a, #10151d); color: #8ab4f8; border: 1px solid #2c3e50; }
-        .btn-full { background: linear-gradient(135deg, #eee, #ccc); color: #000; box-shadow: 0 4px 15px rgba(255,255,255,0.1); animation: subtlePulse 3s infinite; }
-        button.action-btn:hover { transform: translateY(-3px) scale(1.02); filter: brightness(1.2); }
-        button.action-btn:active { transform: translateY(0) scale(0.98); }
-        @keyframes subtlePulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; }
+        button.action-btn { padding: 16px; border: none; border-radius: 10px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: 0.2s; }
+        .btn-mp3 { background: #222; color: #fff; border: 1px solid #444; }
+        .btn-mute { background: #222; color: #aaa; border: 1px solid #444; }
+        .btn-full { background: #00ff7f; color: #000; box-shadow: 0 5px 20px rgba(0,255,127,0.2); }
+        button.action-btn:active { transform: scale(0.98); }
         .trim-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 0 5px; }
-        .trim-label { font-size: 11px; color: #777; letter-spacing: 2px; font-weight: bold; }
+        .trim-label { font-size: 11px; color: #666; letter-spacing: 1px; font-weight: bold; }
         .switch { position: relative; display: inline-block; width: 36px; height: 18px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
         .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: #888; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #fff; }
+        input:checked + .slider { background-color: #00ff7f; }
         input:checked + .slider:before { transform: translateX(18px); background-color: #000; }
-        .trim-box { display: none; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        .time-inp { background: #1a1a1a; border: 1px solid #333; padding: 12px; color: #fff; text-align: center; border-radius: 8px; font-family: monospace; }
-        .loader { display: none; margin-top: 25px; color: #888; font-size: 11px; letter-spacing: 2px; }
+        .trim-box { display: none; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .time-inp { background: #111; border: 1px solid #333; padding: 12px; color: #00ff7f; text-align: center; border-radius: 8px; font-family: monospace; }
+        .loader { display: none; margin-top: 25px; color: #00ff7f; font-size: 11px; letter-spacing: 2px; }
         .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; font-size: 10px; color: #555; }
-        .insta { color: #fff; text-decoration: none; font-weight: bold; margin-top: 8px; display: inline-block; padding: 5px 10px; background: #111; border-radius: 20px; transition: 0.3s; }
+        .insta { color: #fff; text-decoration: none; font-weight: bold; margin-top: 8px; display: inline-block; padding: 5px 10px; background: #111; border-radius: 20px; }
     </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
+    <div class="bg-pulse"></div>
     <div class="glass-panel">
         <h1>Apex</h1>
-        <div class="subtitle">Midnight Engine</div>
+        <div class="subtitle">Eternal Engine</div>
         <div class="input-group"><input type="text" id="urlInput" placeholder="Paste Link..." oninput="checkClear()"><button class="clear-btn" id="clearBtn" onclick="wipeInput()">✕</button></div>
         <div class="trim-header"><span class="trim-label">TRIM MODE</span><label class="switch"><input type="checkbox" id="trimToggle" onchange="toggleTrim()"><span class="slider"></span></label></div>
         <div class="trim-box" id="trimBox"><input type="text" id="start" class="time-inp" placeholder="Start (00:10)"><input type="text" id="end" class="time-inp" placeholder="End (00:30)"></div>
         <div class="btn-stack">
-            <button class="action-btn btn-mp3" onclick="run('audio')"><span>🎵</span> Download Audio</button>
-            <button class="action-btn btn-mute" onclick="run('video_only')"><span>🔇</span> Video Only</button>
-            <button class="action-btn btn-full" onclick="run('video_full')"><span>🎬</span> Full HD Video</button>
+            <button class="action-btn btn-mp3" onclick="run('audio')">Download Audio</button>
+            <button class="action-btn btn-mute" onclick="run('video_only')">Video Only</button>
+            <button class="action-btn btn-full" onclick="run('video_full')">Full HD Video</button>
         </div>
-        <div class="loader" id="loader">INITIALIZING...</div>
+        <div class="loader" id="loader">AUTHENTICATING...</div>
         <div class="footer">DEVELOPED BY KALMESH<br><a href="https://www.instagram.com/kalmesh_nadgoud_18?igsh=bHBhaGJ1cWZoODZ5" target="_blank" class="insta">@kalmesh_nadgoud_18</a></div>
     </div>
 <script>
@@ -73,9 +69,9 @@ HTML_CODE = """
     async function run(mode) {
         const url = document.getElementById('urlInput').value; const loader = document.getElementById('loader');
         const isTrim = document.getElementById('trimToggle').checked; const sTime = document.getElementById('start').value; const eTime = document.getElementById('end').value;
-        if (!url) { alert("Please Paste a Link"); return; }
-        if (isTrim && (!sTime || !eTime)) { alert("Enter Start/End Time"); return; }
-        loader.style.display = 'block'; loader.innerText = isTrim ? "TRIMMING..." : "PROCESSING...";
+        if (!url) { alert("Paste a Link first!"); return; }
+        if (isTrim && (!sTime || !eTime)) { alert("Enter Start/End Time!"); return; }
+        loader.style.display = 'block'; loader.innerText = "AUTHENTICATING...";
         const data = new URLSearchParams(); data.append('url', url); data.append('mode', mode);
         if (isTrim) { data.append('trim', 'true'); data.append('start', sTime); data.append('end', eTime); }
         try {
@@ -85,7 +81,7 @@ HTML_CODE = """
                 if (disp && disp.includes('filename=')) { fname = disp.split('filename=')[1].replace(/"/g, ''); }
                 const blob = await res.blob(); const lnk = window.URL.createObjectURL(blob); const a = document.createElement('a');
                 a.href = lnk; a.download = fname; document.body.appendChild(a); a.click(); a.remove();
-                loader.innerText = "DONE"; setTimeout(() => loader.style.display = 'none', 3000);
+                loader.innerText = "SUCCESS"; setTimeout(() => loader.style.display = 'none', 3000);
             } else { const txt = await res.text(); loader.innerText = "ERROR: " + txt; }
         } catch (e) { loader.innerText = "FAILED"; }
     }
@@ -107,16 +103,13 @@ def download():
     end_time = request.form.get('end')
     timestamp = int(time.time())
 
-    # --- IOS MODE: Pretend to be an iPhone ---
+    # --- USING YOUR PASTED COOKIES ---
     ydl_opts = {
         'quiet': True,
         'outtmpl': f"temp_{timestamp}.%(ext)s",
+        'cookiefile': 'cookies.txt',  # <--- THIS IS THE KEY
         'nocheckcertificate': True,
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['ios'], # The iOS Trick
-            }
-        }
+        'ignoreerrors': True,
     }
 
     try:
@@ -125,7 +118,7 @@ def download():
             rt = info.get('title', f'Apex_{timestamp}')
             if len(rt) > 50: rt = rt[:50]
             clean_title = re.sub(r'[\\/*?:"<>|]', "", rt).strip()
-    except:
+    except Exception as e:
         clean_title = f"Apex_{timestamp}"
 
     # Trim Logic
