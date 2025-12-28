@@ -107,14 +107,16 @@ def download():
     end_time = request.form.get('end')
     timestamp = int(time.time())
 
-    # --- CLEAN SLATE MODE ---
-    # We removed the manual "user agent" disguise because it was
-    # conflicting with the internal tools. We now let yt-dlp
-    # manage the connection naturally.
+    # --- IOS MODE: Pretend to be an iPhone ---
     ydl_opts = {
         'quiet': True,
         'outtmpl': f"temp_{timestamp}.%(ext)s",
         'nocheckcertificate': True,
+        'extractor_args': {
+            'youtube': {
+                'player_client': ['ios'], # The iOS Trick
+            }
+        }
     }
 
     try:
