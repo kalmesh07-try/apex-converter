@@ -3,7 +3,6 @@ import yt_dlp
 import os
 import time
 import re
-import random
 
 app = Flask(__name__)
 
@@ -108,21 +107,14 @@ def download():
     end_time = request.form.get('end')
     timestamp = int(time.time())
 
-    # --- CAMOUFLAGE (BYPASS YOUTUBE BOT DETECTION) ---
+    # --- CLEAN SLATE MODE ---
+    # We removed the manual "user agent" disguise because it was
+    # conflicting with the internal tools. We now let yt-dlp
+    # manage the connection naturally.
     ydl_opts = {
         'quiet': True,
         'outtmpl': f"temp_{timestamp}.%(ext)s",
         'nocheckcertificate': True,
-        'geo_bypass': True,
-        'extractor_args': {
-            'youtube': {
-                'player_client': ['android', 'web'], # Pretend to be an Android Phone
-                'player_skip': ['webpage', 'configs', 'js'], 
-            }
-        },
-        'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        }
     }
 
     try:
